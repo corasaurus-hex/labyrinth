@@ -4,7 +4,7 @@
 (defn random-direction
   "Returns a random direction, either :north or :east."
   []
-  ([:north :east] (rand-int 2)))
+  (rand-nth [:north :east]))
 
 (defn at-end?
   "Are we at the end of the maze, meaning the walk function should stop."
