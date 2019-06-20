@@ -1,6 +1,6 @@
-(ns labyrinth.core)
+(ns labyrinth.core
+  (:require [labyrinth.grid :as grid]
+            [labyrinth.grid.binary-tree :as binary-tree]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(grid/->maze 5 5)
+(binary-tree/random-direction)
