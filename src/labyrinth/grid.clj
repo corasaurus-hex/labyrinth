@@ -37,8 +37,17 @@
   [width height]
   {:width width
    :height height
-   :cursor [0 0]
+   :cursor [1 1]
    :cells (->cells width height)})
+
+(defn opposite-direction
+  "Finds the keyword for the opposite direction of the argument."
+  [direction]
+  (case direction
+    :north :south
+    :south :north
+    :east  :west
+    :west  :east))
 
 (defn coord-in-direction
   "Gets you the coordinate for a given direction given the current cursor position. Returns nil if there is none."
@@ -48,3 +57,23 @@
     :east  (when (< col width)  [(inc col) row])
     :south (when (< 1 row)      [col (dec row)])
     :west  (when (< 1 col)      [(dec col) row])))
+
+(defn move-cursor
+  "Changes the cursor to the passed coordinate."
+  [maze cell]
+  (assoc maze :cursor cell))
+
+(defn link-cell
+  "Two-way links one cell to another in the specified direction."
+  ([maze [cell direction]]
+   (link-cell maze cell direction))
+  ([maze cell direction]
+   (let [other-cell (coord-in-direction maze direction)
+         other-dir  (opposite-direction direction)]
+     (-> maze
+         (update-in [:cells cell] #(conj %1 direction))
+         (update-in [:cells other-cell] #(conj %1 other-dir))))))
+
+(defn add-exits
+  [maze]
+  maze)
