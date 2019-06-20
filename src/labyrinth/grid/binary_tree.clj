@@ -11,6 +11,11 @@
   [{:keys [width height] [col row] :cursor}]
   (and (= col width) (= row height)))
 
+(defn penultimate?
+  "Are we at the penultimate cell of the maze, meaning at-end? returns true for the next cell."
+  [{:keys [width height] [col row] :cursor}]
+  (and (= (inc col) width) (= row height)))
+
 (defn next-direction-to-link
   "Gets the next coordinate to link the cursor to. Returns nil if at the end of the maze."
   [{:keys [width height] [col row] :cursor :as maze}]
@@ -33,10 +38,9 @@
 (defn next-steps
   "Returns the next list of of operations to perform on the maze"
   [{cursor :cursor :as maze}]
-   (if (at-end? maze)
-     [[:add-exits]]
-     [[:link [cursor (next-direction-to-link maze)]]
-      [:move (next-cursor-pos maze)]]))
+  (cond-> [[:link [cursor (next-direction-to-link maze)]]
+           [:move (next-cursor-pos maze)]]
+    (penultimate? maze) (conj [[:add-exits]])))
 
 (defn do-step
   "Perform an operation on the maze, returning the changed maze. If op is not recognized then just return the maze."
