@@ -1,10 +1,19 @@
 # labyrinth
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to generate mazes.
 
 ## Usage
 
-FIXME
+``` clojure
+(require '[labyrinth.grid :as g]
+         '[labyrinth.grid.binary-tree :as bt]
+         '[labyrinth.export :as e])
+
+
+(-> (g/->maze 50 50)              ;; build an empty 50x50 cell maze
+    (bt/gen)                      ;; generate the maze using the binary-tree algorithm
+    (e/->png 500 500 "file.png")) ;; write the generated maze to a 500x500 px PNG
+```
 
 ## License
 
