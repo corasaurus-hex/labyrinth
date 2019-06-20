@@ -18,6 +18,12 @@
 (s/def ::maze (s/keys :req-un
                       [::width ::height ::cells ::cursor]))
 
+(def opposite-directions
+  {:north :south
+   :south :north
+   :east  :west
+   :west  :east})
+
 (defn ->coords
   "Generates a list of vectors of all coordinates for a given width and height maze"
   [width height]
@@ -40,15 +46,6 @@
    :cursor [1 1]
    :cells (->cells width height)})
 
-(defn opposite-direction
-  "Finds the keyword for the opposite direction of the argument."
-  [direction]
-  (case direction
-    :north :south
-    :south :north
-    :east  :west
-    :west  :east))
-
 (defn coord-in-direction
   "Gets you the coordinate for a given direction given the current cursor position. Returns nil if there is none."
   [{:keys [width height] [col row] :cursor} direction]
@@ -69,7 +66,7 @@
    (link-cell maze cell direction))
   ([maze cell direction]
    (let [other-cell (coord-in-direction maze direction)
-         other-dir  (opposite-direction direction)]
+         other-dir  (opposite-directions direction)]
      (-> maze
          (update-in [:cells cell] #(conj %1 direction))
          (update-in [:cells other-cell] #(conj %1 other-dir))))))
