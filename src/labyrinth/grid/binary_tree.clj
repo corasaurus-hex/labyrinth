@@ -19,13 +19,13 @@
 (defn next-direction-to-link
   "Gets the next coordinate to link the cursor to. Returns nil if at the end of the maze."
   [{:keys [width height] [col row] :cursor :as maze}]
-   (when-not (at-end? maze)
-     (let [max-col (= col width)
-           max-row (= row height)]
-       (cond
-         max-row :east
-         max-col :north
-         :else   (random-direction)))))
+  (when-not (at-end? maze)
+    (let [max-col (= col width)
+          max-row (= row height)]
+      (cond
+        max-row :east
+        max-col :north
+        :else (random-direction)))))
 
 (defn next-cursor-pos
   "Gets the next position the walk function should move the cursor to. Returns nil if at the end of the maze."
