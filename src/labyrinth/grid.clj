@@ -48,7 +48,7 @@
 
 (defn coord-in-direction
   "Gets you the coordinate for a given direction given the current cursor position. Returns nil if there is none."
-  [{:keys [width height] [col row] :cursor} direction]
+  [{:keys [width height]} [col row] direction]
   (case direction
     :north (when (< row height) [col (inc row)])
     :east  (when (< col width)  [(inc col) row])
@@ -65,8 +65,8 @@
   ([maze [cell direction]]
    (link-cell maze cell direction))
   ([maze cell direction]
-   (let [other-cell (coord-in-direction maze direction)
-         other-dir  (opposite-directions direction)]
+   (let [other-cell (coord-in-direction maze cell direction)
+         other-dir (opposite-directions direction)]
      (-> maze
          (update-in [:cells cell] #(conj %1 direction))
          (update-in [:cells other-cell] #(conj %1 other-dir))))))
