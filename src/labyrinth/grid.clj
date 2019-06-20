@@ -8,8 +8,8 @@
                           :kind set?
                           :min-count 0
                           :max-count 4))
-(s/def ::row (s/and int? (complement neg?)))
-(s/def ::col (s/and int? (complement neg?)))
+(s/def ::row (s/and int? pos?))
+(s/def ::col (s/and int? pos?))
 (s/def ::coordinate (s/tuple ::col ::row))
 (s/def ::cursor ::coordinate)
 (s/def ::cells (s/map-of
