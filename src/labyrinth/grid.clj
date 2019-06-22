@@ -60,6 +60,11 @@
   [maze cell]
   (assoc maze :cursor cell))
 
+(defn add-exit
+  "Adds an exit at the coordinate in the direction specified."
+  [maze coord direction]
+  (update-in maze [:cells coord] #(conj %1 direction)))
+
 (defn link-cell
   "Two-way links one cell to another in the specified direction."
   ([maze [cell direction]]
@@ -68,9 +73,41 @@
    (let [other-cell (coord-in-direction maze cell direction)
          other-dir (opposite-directions direction)]
      (-> maze
-         (update-in [:cells cell] #(conj %1 direction))
-         (update-in [:cells other-cell] #(conj %1 other-dir))))))
+         (add-exit cell direction)
+         (add-exit other-cell other-dir)))))
+
+(defn maze->perimeter
+  "Calculate the perimeter of a maze."
+  [{:keys [width height]}]
+  (+ (* 2 width)
+     (* 2 height)))
+
+(defn maze->permiter-coord+edges
+  "Gets all the coords on the perimeter of a maze, in order, including the edge,
+  by walking the perimeter starting with the southwest corner. Used for walking
+  the permiter to find entrances and exits.
+  NOTE: Corner coordinates are repeated, but with different edges."
+  [{:keys [width height]}]
+  (concat (for [row (range 1 (inc height))] [[1 row] :west])      ;; west edge coordinates, from south to north
+          (for [col (range 1 (inc width))] [[col height] :north]) ;; north edge coordinates, from west to east
+          (for [row (range height 0 -1)] [[width row] :east])     ;; east edge coordinates, from north to south
+          (for [col (range width 0 -1)] [[col 1] :south])))       ;; south edge coordinates, from east to west
+
+(defn perimeter-walk->coord+edge
+  "Walks a given number of cell edges around a maze perimiter and gives the coordinates of the cell it stops on."
+  [maze steps]
+  (-> (maze->permiter-coord+edges maze)
+      (cycle)
+      (nth (dec steps))))
 
 (defn add-exits
   [maze]
-  maze)
+  (let [perimeter (maze->perimeter maze)
+        half-perimeter (/ perimeter 2)
+        entry-steps (rand-int half-perimeter)
+        exit-steps (+ half-perimeter entry-steps)
+        [entry-coord entry-edge] (perimeter-walk->coord+edge maze entry-steps)
+        [exit-coord exit-edge] (perimeter-walk->coord+edge maze exit-steps)]
+    (-> maze
+        (add-exit entry-coord entry-edge)
+        (add-exit exit-coord exit-edge))))
