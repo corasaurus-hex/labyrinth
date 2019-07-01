@@ -42,13 +42,27 @@
            [:move (next-cursor-pos maze)]]
     (penultimate? maze) (conj [:add-outlets])))
 
+(defn add-outlets
+  "Adds an exit and an entrance to the maze."
+  [maze]
+  (let [perimeter (g/maze->perimeter maze)
+        quarter-perimeter (/ perimeter 4)
+        three-quarter-perimeter (* 3 quarter-perimeter)
+        entry-steps (inc (rand-int quarter-perimeter))
+        exit-steps (+ three-quarter-perimeter entry-steps)
+        [entry-coord entry-edge] (g/perimeter-walk->coord+edge maze entry-steps)
+        [exit-coord exit-edge] (g/perimeter-walk->coord+edge maze exit-steps)]
+    (-> maze
+        (g/add-entrance entry-coord entry-edge)
+        (g/add-exit exit-coord exit-edge))))
+
 (defn do-step
   "Perform an operation on the maze, returning the changed maze. If op is not recognized then just return the maze."
   [maze [op payload]]
   (case op
     :link (apply g/link-cell maze payload)
     :move (g/move-cursor maze payload)
-    :add-outlets (g/add-outlets maze)
+    :add-outlets (add-outlets maze)
     maze))
 
 (defn gen
