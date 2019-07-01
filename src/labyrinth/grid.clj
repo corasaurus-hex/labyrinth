@@ -116,16 +116,3 @@
   (-> (maze->permiter-coord+edges maze)
       (cycle)
       (nth (dec steps))))
-
-(defn add-outlets
-  "Adds an exit and an entrance to the maze."
-  [maze]
-  (let [perimeter (maze->perimeter maze)
-        half-perimeter (/ perimeter 2)
-        entry-steps (inc (rand-int perimeter))
-        exit-steps (+ half-perimeter entry-steps)
-        [entry-coord entry-edge] (perimeter-walk->coord+edge maze entry-steps)
-        [exit-coord exit-edge] (perimeter-walk->coord+edge maze exit-steps)]
-    (-> maze
-        (add-entrance entry-coord entry-edge)
-        (add-exit exit-coord exit-edge))))
