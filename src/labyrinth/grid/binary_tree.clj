@@ -40,23 +40,24 @@
   [{cursor :cursor :as maze}]
   (cond-> [[:link [cursor (next-direction-to-link maze)]]
            [:move (next-cursor-pos maze)]]
-    (penultimate? maze) (conj [[:add-exits]])))
+    (penultimate? maze) (conj [:add-outlets])))
 
 (defn do-step
   "Perform an operation on the maze, returning the changed maze. If op is not recognized then just return the maze."
   [maze [op payload]]
   (case op
-    :link (g/link-cell maze payload)
+    :link (apply g/link-cell maze payload)
     :move (g/move-cursor maze payload)
-    :add-exits (g/add-exits maze)
+    :add-outlets (g/add-outlets maze)
     maze))
 
 (defn gen
   "Given a grid maze, generate paths through the maze using the binary-tree algorithm."
-  [maze]
-  (if (at-end? maze)
-    maze
-    (recur
-     (reduce do-step
-             maze
-             (next-steps maze)))))
+  [{:keys [width height] :as maze}]
+  (cond
+    (= 1 width height) (do-step maze [:add-outlets])
+    (at-end? maze) maze
+    :else (recur
+           (reduce do-step
+                   maze
+                   (next-steps maze)))))

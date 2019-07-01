@@ -6,18 +6,20 @@ A Clojure library designed to generate mazes.
 
 ``` clojure
 (require '[labyrinth.grid :as g]
+         '[labyrinth.grid.ir :as ir]
          '[labyrinth.grid.binary-tree :as bt]
          '[labyrinth.export :as e])
 
 
 (-> (g/->maze 50 50)              ;; build an empty 50x50 cell maze
     (bt/gen)                      ;; generate the maze using the binary-tree algorithm
-    (e/->png 500 500 "file.png")) ;; write the generated maze to a 500x500 px PNG
+    (ir/->ir)                     ;; generate an intermediate representation of the maze for exporting
+    (e/ir->txt))                  ;; take the intermediate representation and convert it to txt
 ```
 
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 Nathan Sutton
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
