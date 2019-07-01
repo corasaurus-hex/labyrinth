@@ -1,28 +1,25 @@
-(ns labyrinth.grid
-  (:require [clojure.spec.alpha :as s]))
-
-(s/def ::width (s/and int? pos?))
-(s/def ::height (s/and int? pos?))
-(s/def ::direction #{:north :south :east :west})
-(s/def ::exits (s/coll-of ::direction
-                          :kind set?
-                          :min-count 0
-                          :max-count 4))
-(s/def ::row (s/and int? pos?))
-(s/def ::col (s/and int? pos?))
-(s/def ::coordinate (s/tuple ::col ::row))
-(s/def ::cursor ::coordinate)
-(s/def ::cells (s/map-of
-                ::coordinate
-                ::exits))
-(s/def ::maze (s/keys :req-un
-                      [::width ::height ::cells ::cursor]))
+(ns labyrinth.grid)
 
 (def opposite-directions
   {:north :south
    :south :north
    :east  :west
    :west  :east})
+
+(defn wall-at?
+  "Returns true if there is a wall in a direction for a cell, otherwise false."
+  [cell direction]
+  (if cell
+    (= (cell direction) :wall)
+    false))
+
+(defn wall-between?
+  "Checks to see if there is a wall between two cells. Cells may be nil."
+  [[cell direction]
+   [other-cell other-direction]]
+  (or (wall-at? cell direction)
+      (wall-at? other-cell other-direction)))
+
 
 (defn ->coords
   "Generates a list of vectors of all coordinates for a given width and height maze"
@@ -31,12 +28,19 @@
         row (range 1 (inc height))]
     [col row]))
 
+(defn ->edges
+  "Generates a grid edge where each value is a wall."
+  []
+  {:north :wall
+   :south :wall
+   :east :wall
+   :west :wall})
+
 (defn ->cells
-  "Generates a map of cells that has keys of coordinates and values of empty sets eventually to be filled with exit directions."
+  "Generates a map of cells that has keys of coordinates and values of edges that are all walls."
   [width height]
-  (reduce #(assoc %1 %2 #{})
-          {}
-          (->coords width height)))
+  (zipmap (->coords width height)
+          (repeatedly ->edges)))
 
 (defn ->maze
   "Generates a maze of a specific width and height."
@@ -60,21 +64,34 @@
   [maze cell]
   (assoc maze :cursor cell))
 
+(defn change-edge-type
+  "Changes the edge type for a cell."
+  [maze coord direction edge-type]
+  (update-in maze [:cells coord] #(assoc %1 direction edge-type)))
+
+(defn add-door
+  "Adds an door at the coordinate in the direction specified."
+  [maze coord direction]
+  (change-edge-type maze coord direction :door))
+
+(defn add-entrance
+  "Adds an entrance at the coordinate in the direction specified."
+  [maze coord direction]
+  (change-edge-type maze coord direction :entrance))
+
 (defn add-exit
   "Adds an exit at the coordinate in the direction specified."
   [maze coord direction]
-  (update-in maze [:cells coord] #(conj %1 direction)))
+  (change-edge-type maze coord direction :exit))
 
 (defn link-cell
   "Two-way links one cell to another in the specified direction."
-  ([maze [cell direction]]
-   (link-cell maze cell direction))
-  ([maze cell direction]
-   (let [other-cell (coord-in-direction maze cell direction)
-         other-dir (opposite-directions direction)]
-     (-> maze
-         (add-exit cell direction)
-         (add-exit other-cell other-dir)))))
+  [maze cell direction]
+  (let [other-cell (coord-in-direction maze cell direction)
+        other-direction (opposite-directions direction)]
+    (-> maze
+        (add-door cell direction)
+        (add-door other-cell other-direction))))
 
 (defn maze->perimeter
   "Calculate the perimeter of a maze."
@@ -100,14 +117,15 @@
       (cycle)
       (nth (dec steps))))
 
-(defn add-exits
+(defn add-outlets
+  "Adds an exit and an entrance to the maze."
   [maze]
   (let [perimeter (maze->perimeter maze)
         half-perimeter (/ perimeter 2)
-        entry-steps (rand-int half-perimeter)
+        entry-steps (inc (rand-int perimeter))
         exit-steps (+ half-perimeter entry-steps)
         [entry-coord entry-edge] (perimeter-walk->coord+edge maze entry-steps)
         [exit-coord exit-edge] (perimeter-walk->coord+edge maze exit-steps)]
     (-> maze
-        (add-exit entry-coord entry-edge)
+        (add-entrance entry-coord entry-edge)
         (add-exit exit-coord exit-edge))))
