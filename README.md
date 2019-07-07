@@ -6,9 +6,9 @@ A Clojure library designed to generate mazes.
 
 ``` clojure
 (require '[labyrinth.grid :as g]
-         '[labyrinth.grid.ir :as ir]
+         '[labyrinth.grid.export.ir :as ir]
          '[labyrinth.grid.binary-tree :as bt]
-         '[labyrinth.export :as e])
+         '[labyrinth.grid.export :as e])
 
 (-> (g/->maze 10 10) ;; build an empty 10x10 cell maze
     (bt/gen)         ;; generate the maze using the binary-tree algorithm
