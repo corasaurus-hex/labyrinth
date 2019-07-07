@@ -49,12 +49,10 @@
         quarter-perimeter (/ perimeter 4)
         three-quarter-perimeter (* 3 quarter-perimeter)
         entry-steps (inc (rand-int quarter-perimeter))
-        exit-steps (+ three-quarter-perimeter entry-steps)
-        [entry-coord entry-edge] (g/perimeter-walk->coord+edge maze entry-steps)
-        [exit-coord exit-edge] (g/perimeter-walk->coord+edge maze exit-steps)]
+        exit-steps (+ three-quarter-perimeter entry-steps)]
     (-> maze
-        (g/add-entrance entry-coord entry-edge)
-        (g/add-exit exit-coord exit-edge))))
+        (g/walk-and-add-entrance entry-steps)
+        (g/walk-and-add-exit exit-steps))))
 
 (defn do-step
   "Perform an operation on the maze, returning the changed maze. If op is not recognized then just return the maze."
