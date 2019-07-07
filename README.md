@@ -1,4 +1,4 @@
-# labyrinth
+# Labyrinth [![CircleCI](https://circleci.com/gh/corasaurus-hex/labyrinth.svg?style=svg)](https://circleci.com/gh/corasaurus-hex/labyrinth)
 
 A Clojure library designed to generate mazes.
 
