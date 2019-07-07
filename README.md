@@ -10,12 +10,12 @@ A Clojure library designed to generate mazes.
          '[labyrinth.grid.binary-tree :as bt]
          '[labyrinth.export :as e])
 
-
 (-> (g/->maze 10 10) ;; build an empty 50x50 cell maze
     (bt/gen)         ;; generate the maze using the binary-tree algorithm
     (ir/->ir)        ;; generate an intermediate representation of the maze for exporting
     (e/ir->txt)      ;; take the intermediate representation and convert it to txt
     (println))
+
 ;; ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ;; ┃                                                 ┃
 ;; ┃    ┏━━━━╸    ╻    ╻    ┏━━━━╸    ╻    ┏━━━━╸    ┃
