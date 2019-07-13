@@ -53,3 +53,19 @@
     (is (not (b/penultimate? (g/move-cursor (g/->maze 1 3) [1 1]))))
     (is (not (b/penultimate? (g/move-cursor (g/->maze 3 1) [3 1]))))
     (is (not (b/penultimate? (g/move-cursor (g/->maze 3 1) [1 1]))))))
+
+(deftest next-direction-to-link
+  (testing "returns :east when at the max row"
+    (is (= :east (b/next-direction-to-link (g/move-cursor (g/->maze 3 3) [1 3]))))
+    (is (= :east (b/next-direction-to-link (g/move-cursor (g/->maze 3 3) [2 3])))))
+  (testing "returns :north when at the max col"
+    (is (= :north (b/next-direction-to-link (g/move-cursor (g/->maze 3 3) [3 2]))))
+    (is (= :north (b/next-direction-to-link (g/move-cursor (g/->maze 3 3) [3 1])))))
+  (testing "returns a random direction, either east or north"
+    (let [maze (g/move-cursor (g/->maze 3 3) [2 2])]
+      (is (= '(:east :north)
+             (->> #(b/next-direction-to-link maze)
+                  (repeatedly)
+                  (take 1000)
+                  (distinct)
+                  (sort)))))))
