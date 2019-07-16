@@ -42,9 +42,10 @@
 (defn next-steps
   "Returns the next list of of operations to perform on the maze"
   [{cursor :cursor :as maze}]
-  (cond-> [[:link [cursor (next-direction-to-link maze)]]
-           [:move (next-cursor-pos maze)]]
-    (penultimate? maze) (conj [:add-outlets])))
+  (when-not (at-end? maze)
+    (cond-> [[:link [cursor (next-direction-to-link maze)]]
+             [:move (next-cursor-pos maze)]]
+      (penultimate? maze) (conj [:add-outlets]))))
 
 (defn add-outlets
   "Adds an exit and an entrance to the maze."

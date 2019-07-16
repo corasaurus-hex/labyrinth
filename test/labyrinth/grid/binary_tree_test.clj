@@ -1,6 +1,8 @@
 (ns labyrinth.grid.binary-tree-test
   (:require [labyrinth.grid.binary-tree :as b]
             [clojure.test :refer [deftest testing is are]]
+            [labyrinth.grid.specs]
+            [clojure.spec.alpha :as s]
             [labyrinth.grid :as g]))
 
 (deftest random-direction
@@ -69,3 +71,26 @@
                   (take 1000)
                   (distinct)
                   (sort)))))))
+
+(deftest next-steps
+  (let [maze (g/->maze 3 3)]
+    (testing "returns nil when at the end of the maze"
+      (is (nil? (b/next-steps (g/move-cursor maze [3 3])))))
+    (testing "returns a link and a move when before the penultimate position of the maze"
+      (let [steps (b/next-steps maze)
+            [link move] steps
+            link-msg (s/explain-str :binary-tree/link-step link)
+            move-msg (s/explain-str :binary-tree/move-step move)]
+        (is (= "Success!\n" link-msg) link-msg)
+        (is (= "Success!\n" move-msg) link-msg)
+        (is (= 2 (count steps)))))
+    (testing "returns a link, a move, and an add-outlets step when on the penultimate position of the maze"
+      (let [steps (b/next-steps (g/move-cursor maze [2 3]))
+            [link move add-outlets] steps
+            link-msg (s/explain-str :binary-tree/link-step link)
+            move-msg (s/explain-str :binary-tree/move-step move)
+            add-outlets-msg (s/explain-str :binary-tree/add-outlets-step add-outlets)]
+        (is (= "Success!\n" link-msg) link-msg)
+        (is (= "Success!\n" move-msg) link-msg)
+        (is (= "Success!\n" add-outlets-msg) add-outlets-msg)
+        (is (= 3 (count steps)))))))
