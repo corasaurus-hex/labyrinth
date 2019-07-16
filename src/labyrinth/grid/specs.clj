@@ -28,6 +28,12 @@
 (s/def :grid/maze (s/and (s/keys :req-un [:grid/width :grid/height :grid/cells :grid/cursor])
                          all-coords?))
 
+(s/def :binary-tree/link-from :grid/coordinate)
+(s/def :binary-tree/link-direction :cell/direction)
+(s/def :binary-tree/link-step (s/tuple #(= :link %) (s/tuple :binary-tree/link-from :binary-tree/link-direction)))
+(s/def :binary-tree/move-step (s/tuple #(= :move %) :grid/coordinate))
+(s/def :binary-tree/add-outlets-step (s/tuple #(= :add-outlets %)))
+
 (s/def :export-ir/width pos-int?)
 (s/def :export-ir/height pos-int?)
 (s/def :export-ir/col pos-int?)
