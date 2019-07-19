@@ -5,4 +5,5 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.0"]]
   :repl-options {:init-ns labyrinth.core}
-  :profiles {:dev {:resource-paths ["dev"]}})
+  :profiles {:dev {:resource-paths ["dev"]
+                   :dependencies [[meander/delta "0.0.137"]]}})
