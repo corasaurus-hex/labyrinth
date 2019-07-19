@@ -3,7 +3,8 @@
             [clojure.test :refer [deftest testing is are]]
             [labyrinth.grid.specs]
             [clojure.spec.alpha :as s]
-            [labyrinth.grid :as g]))
+            [labyrinth.grid :as g]
+            [meander.match.delta :as m]))
 
 (deftest random-direction
   (testing "returns a north or an east"
@@ -94,3 +95,26 @@
         (is (= "Success!\n" move-msg) link-msg)
         (is (= "Success!\n" add-outlets-msg) add-outlets-msg)
         (is (= 3 (count steps)))))))
+
+(deftest add-outlets
+  (testing "adds an entrance and an exit"
+    (let [maze (b/add-outlets (g/->maze 10 10))
+          entrances (m/search maze {:cells {?coord {?direction :entrance}}} [?coord ?direction])
+          exits (m/search maze {:cells {?coord {?direction :exit}}} [?coord ?direction])]
+      (is (= 1 (count entrances)))
+      (is (= 1 (count exits))))))
+
+(deftest do-step
+  (testing "links cells"
+    (let [maze (b/do-step (g/->maze 10 10) [:link [[2 2] :north]])]
+      (is (= :door (get-in maze [:cells [2 2] :north])))
+      (is (= :door (get-in maze [:cells [2 3] :south])))))
+  (testing "moves the cursor"
+    (let [maze (b/do-step (g/->maze 10 10) [:move [5 5]])]
+      (is (= [5 5] (:cursor maze)))))
+  (testing "adds outlets"
+    (let [maze (b/do-step (g/->maze 10 10) [:add-outlets])
+          entrances (m/search maze {:cells {?coord {?direction :entrance}}} [?coord ?direction])
+          exits (m/search maze {:cells {?coord {?direction :exit}}} [?coord ?direction])]
+      (is (= 1 (count entrances)))
+      (is (= 1 (count exits))))))
