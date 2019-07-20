@@ -24,9 +24,13 @@
   "Given maze grid cells and an IR intersection coordinate, this determines what kind of wall type should be in this position in the IR."
   [cells coord]
   (let [{:keys [north south]} (horizontal-coord->surrounding-cells cells coord)]
-    (if (g/wall-between? [north :south] [south :north])
-      :horizontal
-      :horizontal-empty)))
+    (cond
+      (g/wall-between? [north :south] [south :north]) :horizontal
+      (and (nil? north) (= :entrance (:north south))) :north-entrance
+      (and (nil? north) (= :exit (:north south))) :north-exit
+      (and (nil? south) (= :entrance (:south north))) :south-entrance
+      (and (nil? south) (= :exit (:south north))) :south-exit
+      :else :horizontal-empty)))
 
 (defn vertical-coord->surrounding-cell-coords
   [[col row]]
@@ -44,9 +48,13 @@
   "Given maze grid cells and an IR intersection coordinate, this determines what kind of wall type should be in this position in the IR."
   [cells coord]
   (let [{:keys [east west]} (vertical-coord->surrounding-cells cells coord)]
-    (if (g/wall-between? [east :west] [west :east])
-      :vertical
-      :vertical-empty)))
+    (cond
+      (g/wall-between? [east :west] [west :east]) :vertical
+      (and (nil? west) (= :entrance (:west east))) :west-entrance
+      (and (nil? west) (= :exit (:west east))) :west-exit
+      (and (nil? east) (= :entrance (:east west))) :east-entrance
+      (and (nil? east) (= :exit (:east west))) :east-exit
+      :else :vertical-empty)))
 
 (def intersection-wall-directions->block
   {#{:north :south} :vertical

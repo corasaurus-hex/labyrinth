@@ -19,7 +19,7 @@
   ╺━━━━━━━━━┻━━━━┻━━━━┻━━━━┛
 
   Uses heavy characters."
-  {:horizontal "━━━━"
+  {:horizontal "━━━"
    :vertical "┃"
    :down-and-right "┏"
    :down-and-left "┓"
@@ -35,9 +35,17 @@
    :half-right "╺"
    :half-down "╻"
    :vertical-empty " "
-   :horizontal-empty "    "
-   :empty "    "
-   :intersection-horizontal "━"})
+   :horizontal-empty "   "
+   :empty "   "
+   :intersection-horizontal "━"
+   :west-entrance ">"
+   :west-exit "<"
+   :east-entrance "<"
+   :east-exit ">"
+   :north-entrance " ∨ "
+   :north-exit " ∧ "
+   :south-entrance " ∧ "
+   :south-exit " ∨ "})
 
 (def arrows {:left "<"
              :right ">"
