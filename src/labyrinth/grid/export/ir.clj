@@ -128,6 +128,6 @@
         ir-height (inc (* 2 height))]
     {:width ir-width
      :height ir-height
-     :blocks (reduce #(assoc %1 %2 (ir-coord->block cells %2))
-                     {}
-                     (g/->coords ir-width ir-height))}))
+     :blocks (into {}
+                   (map #(vector % (ir-coord->block cells %)))
+                   (g/->coords ir-width ir-height))}))
