@@ -15,3 +15,12 @@
     (ir/->ir)
     (e/ir->txt)
     (println))
+
+#_Agassiz
+
+
+#_{:paths
+   [{:cursor [2 2]
+     :path [:entrance :north :north :north :east :south :dead-end]}
+    {:cursor [2 4]
+     :path [:entrance :north :north :north :east :north]}]}
