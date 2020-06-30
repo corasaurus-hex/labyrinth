@@ -6,4 +6,4 @@
   :dependencies [[org.clojure/clojure "1.10.0"]]
   :repl-options {:init-ns labyrinth.core}
   :profiles {:dev {:resource-paths ["dev"]
-                   :dependencies [[meander/delta "0.0.137"]]}})
+                   :dependencies [[meander/delta "0.0.149"]]}})
