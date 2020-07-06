@@ -2,6 +2,7 @@
   (:require [clojure.spec.alpha :as s]
             [labyrinth.grid.specs]))
 
+
 (def opposite-directions
   {:north :south
    :south :north
