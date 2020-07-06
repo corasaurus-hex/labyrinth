@@ -8,6 +8,7 @@
    :east  :west
    :west  :east})
 
+
 (defn ->coords
   "Generates a list of vectors of all coordinates for a given width and height maze"
   [width height]
