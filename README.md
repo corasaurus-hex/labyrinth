@@ -39,6 +39,31 @@ A Clojure library designed to generate mazes.
 ;; ┗━━━━┻━━━━╸    ┗━━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━┻━━━━┛
 ```
 
+## Development
+
+### Dependencies
+
+* [just](https://github.com/casey/just)
+* [clojure](https://clojure.org/)
+
+### Starting a REPL
+
+``` shell
+just repl
+```
+
+### Running Tests
+
+``` shell
+just test
+```
+
+### Building
+
+``` shell
+just ci
+```
+
 ## License
 
 Copyright © 2019 Cora Sutton
