@@ -6,10 +6,11 @@
           :ns-default build}
   :repl {:extra-paths ["dev"]
          :main-opts  ["-m" "nrepl.cmdline"
-                      "--middleware" "[cider.nrepl/cider-middleware]"
+                      "--middleware" "[refactor-nrepl.middleware/wrap-refactor,cider.nrepl/cider-middleware]"
                       "--interactive"]
          :extra-deps {cider/cider-nrepl {:mvn/version "0.28.6"}
                       nrepl/nrepl       {:mvn/version "1.0.0"}
+                      refactor-nrepl/refactor-nrepl {:mvn/version "3.5.5"}
                       meander/delta {:mvn/version "0.0.149"}}}
   :test
   {:extra-paths ["test"]
