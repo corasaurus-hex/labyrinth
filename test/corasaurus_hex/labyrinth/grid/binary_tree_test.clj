@@ -33,29 +33,33 @@
 
 (deftest next-cursor-pos
   (testing "returns the next cursor position in the grid when there is one"
-    (is (= [2 1] (b/next-cursor-pos (g/->maze 3 3))))
-    (is (= [1 2] (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [3 1]))))
-    (is (= [1 3] (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [3 2]))))
-    (is (= [3 3] (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [2 3]))))
-    (is (= [1 3] (b/next-cursor-pos (g/move-cursor (g/->maze 1 3) [1 2]))))
-    (is (= [3 1] (b/next-cursor-pos (g/move-cursor (g/->maze 3 1) [2 1])))))
+    (are [x y] (= x y)
+      [2 1] (b/next-cursor-pos (g/->maze 3 3))
+      [1 2] (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [3 1]))
+      [1 3] (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [3 2]))
+      [3 3] (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [2 3]))
+      [1 3] (b/next-cursor-pos (g/move-cursor (g/->maze 1 3) [1 2]))
+      [3 1] (b/next-cursor-pos (g/move-cursor (g/->maze 3 1) [2 1]))))
   (testing "returns nil when there is no next cursor position in the grid"
-    (is (nil? (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [3 3]))))
-    (is (nil? (b/next-cursor-pos (g/move-cursor (g/->maze 1 3) [1 3]))))
-    (is (nil? (b/next-cursor-pos (g/move-cursor (g/->maze 3 1) [3 1]))))))
+    (are [x] (nil? x)
+      (b/next-cursor-pos (g/move-cursor (g/->maze 3 3) [3 3]))
+      (b/next-cursor-pos (g/move-cursor (g/->maze 1 3) [1 3]))
+      (b/next-cursor-pos (g/move-cursor (g/->maze 3 1) [3 1])))))
 
 (deftest penultimate?
   (testing "returns true when at the coordinate before the end coordinate"
-    (is (b/penultimate? (g/move-cursor (g/->maze 3 3) [2 3])))
-    (is (b/penultimate? (g/move-cursor (g/->maze 1 3) [1 2])))
-    (is (b/penultimate? (g/move-cursor (g/->maze 3 1) [2 1]))))
+    (are [x] (b/penultimate? x)
+      (b/penultimate? (g/move-cursor (g/->maze 3 3) [2 3]))
+      (b/penultimate? (g/move-cursor (g/->maze 1 3) [1 2]))
+      (b/penultimate? (g/move-cursor (g/->maze 3 1) [2 1]))))
   (testing "returns false when not at the coordinate before the end coordinate"
-    (is (not (b/penultimate? (g/move-cursor (g/->maze 3 3) [3 3]))))
-    (is (not (b/penultimate? (g/move-cursor (g/->maze 3 3) [1 3]))))
-    (is (not (b/penultimate? (g/move-cursor (g/->maze 1 3) [1 3]))))
-    (is (not (b/penultimate? (g/move-cursor (g/->maze 1 3) [1 1]))))
-    (is (not (b/penultimate? (g/move-cursor (g/->maze 3 1) [3 1]))))
-    (is (not (b/penultimate? (g/move-cursor (g/->maze 3 1) [1 1]))))))
+    (are [x] (not (b/penultimate? x))
+      (g/move-cursor (g/->maze 3 3) [3 3])
+      (g/move-cursor (g/->maze 3 3) [1 3])
+      (g/move-cursor (g/->maze 1 3) [1 3])
+      (g/move-cursor (g/->maze 1 3) [1 1])
+      (g/move-cursor (g/->maze 3 1) [3 1])
+      (g/move-cursor (g/->maze 3 1) [1 1]))))
 
 (deftest next-direction-to-link
   (testing "returns :east when at the max row"
