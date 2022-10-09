@@ -1,4 +1,4 @@
-(ns labyrinth.grid.specs
+(ns corasaurus-hex.labyrinth.grid.specs
   (:require [clojure.spec.alpha :as s]))
 
 (defn all-coords?

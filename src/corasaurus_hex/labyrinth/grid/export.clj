@@ -1,4 +1,4 @@
-(ns labyrinth.grid.export)
+(ns corasaurus-hex.labyrinth.grid.export)
 
 (def box-chars
   "Unicode characters for rendering boxes.

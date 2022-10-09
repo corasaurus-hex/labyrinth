@@ -1,7 +1,7 @@
-(ns labyrinth.grid-test
-  (:require [labyrinth.grid :as g]
+(ns corasaurus-hex.labyrinth.grid-test
+  (:require [corasaurus-hex.labyrinth.grid :as g]
             [clojure.spec.alpha :as s]
-            [labyrinth.grid.specs]
+            [corasaurus-hex.labyrinth.grid.specs]
             [clojure.test :refer [deftest testing is are]]))
 
 (deftest ->coords

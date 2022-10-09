@@ -1,5 +1,5 @@
-(ns labyrinth.grid.binary-tree
-  (:require [labyrinth.grid :as g]))
+(ns corasaurus-hex.labyrinth.grid.binary-tree
+  (:require [corasaurus-hex.labyrinth.grid :as g]))
 
 (defn random-direction
   "Returns a random direction, either :north or :east."

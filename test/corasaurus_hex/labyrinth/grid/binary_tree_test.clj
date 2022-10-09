@@ -1,9 +1,9 @@
-(ns labyrinth.grid.binary-tree-test
-  (:require [labyrinth.grid.binary-tree :as b]
+(ns corasaurus-hex.labyrinth.grid.binary-tree-test
+  (:require [corasaurus-hex.labyrinth.grid.binary-tree :as b]
             [clojure.test :refer [deftest testing is are]]
-            [labyrinth.grid.specs]
+            [corasaurus-hex.labyrinth.grid.specs]
             [clojure.spec.alpha :as s]
-            [labyrinth.grid :as g]
+            [corasaurus-hex.labyrinth.grid :as g]
             [meander.match.delta :as m]))
 
 (deftest random-direction

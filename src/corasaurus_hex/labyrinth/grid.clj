@@ -1,6 +1,6 @@
-(ns labyrinth.grid
+(ns corasaurus-hex.labyrinth.grid
   (:require [clojure.spec.alpha :as s]
-            [labyrinth.grid.specs]))
+            [corasaurus-hex.labyrinth.grid.specs]))
 
 (def opposite-directions
   {:north :south

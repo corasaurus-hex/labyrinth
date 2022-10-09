@@ -1,5 +1,5 @@
-(ns labyrinth.grid.export.ir
-  (:require [labyrinth.grid :as g]))
+(ns corasaurus-hex.labyrinth.grid.export.ir
+  (:require [corasaurus-hex.labyrinth.grid :as g]))
 
 (defn surrounding-cell-coords->surrounding-cells
   [cells cell-coords]
