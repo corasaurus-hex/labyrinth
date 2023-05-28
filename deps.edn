@@ -14,7 +14,7 @@
                       meander/delta {:mvn/version "0.0.149"}}}
   :test
   {:extra-paths ["test"]
-   :extra-deps {lambdaisland/kaocha {:mvn/version "1.69.1069"}
+   :extra-deps {lambdaisland/kaocha {:mvn/version "1.84.1335"}
                 meander/delta {:mvn/version "0.0.149"}}
    :main-opts   ["-m" "kaocha.runner"]
    :exec-fn kaocha.runner/exec-fn
