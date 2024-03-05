@@ -9,7 +9,7 @@
                       "--middleware" "[refactor-nrepl.middleware/wrap-refactor,cider.nrepl/cider-middleware]"
                       "--interactive"]
          :extra-deps {cider/cider-nrepl {:mvn/version "0.30.0"}
-                      nrepl/nrepl       {:mvn/version "1.0.0"}
+                      nrepl/nrepl       {:mvn/version "1.1.1"}
                       refactor-nrepl/refactor-nrepl {:mvn/version "3.6.0"}
                       meander/delta {:mvn/version "0.0.149"}}}
   :test
